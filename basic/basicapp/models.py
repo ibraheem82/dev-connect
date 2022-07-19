@@ -19,7 +19,7 @@ class Project(models.Model):
     owner               = models.ForeignKey(Profile, null=True, blank=True, on_delete=models.SET_NULL)
     title               = models.CharField(max_length=200)
     description         = models.TextField(null=True, blank=True)
-    featured_image      = models.ImageField(validators = [FileExtensionValidator(['png', 'jpg'])], null=True, blank="True", default='project_images/small.png')
+    featured_image      = models.ImageField(validators = [FileExtensionValidator(['png', 'jpg'])], null=True, blank="True", upload_to = 'images/', default='/project_images/default-project.jpg')
     demo_link           = models.CharField(max_length=1000, null=True, blank=True)
     source_link         = models.CharField(max_length=1000, null=True, blank=True)
     vote_total          = models.IntegerField(default=0)
