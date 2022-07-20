@@ -51,7 +51,7 @@ def projects(request):
         projects = paginator.page(page)
         
     
-    context = {'projects': projects, 'search_query' : search_query}
+    context = {'projects': projects, 'search_query' : search_query, 'paginator' : paginator}
     return render(request, 'basicapp/projects.html', context)
 
 def project(request, pk):
