@@ -3,7 +3,7 @@ from unittest import result
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .models import Project, Tag
 from .forms import ProjectForm
 from .utils import searchProjects
@@ -17,10 +17,12 @@ from .utils import searchProjects
 def projects(request):
     projects, search_query =  searchProjects(request)
     # ! Getting the first page
-    page = 1
-    
+    # page = 1
     # ! Getting the seccond page
-    page = 1
+    # page = 2
+    
+    # todo-> the page must be an integer, it will be pass in to the paginator button so it will display the number of the page on the browser search url and show the page we are on.
+    page = request.GET.get('page')
     
     
     # ! Numbers of page to be paginated
@@ -30,10 +32,24 @@ def projects(request):
     # ! it will give us three results per page.
     paginator = Paginator(projects, results)
     
-    # !Resetting the project variable and index it by a specific page and only get 3 results
-    # ! we are going to get 3 projects and we are going to get the first page of those 3 projects
-    # ! [ .page ] means what page do we want to get from the query_set
-    projects = paginator.page(page)
+    try:
+        # !Resetting the project variable and index it by a specific page and only get 3 results
+        # ! we are going to get 3 projects and we are going to get the first page of those 3 projects
+        # ! [ .page ] means what page do we want to get from the query_set
+        projects = paginator.page(page)
+        # ! [ PageNotAnInteger ] it means that if a page is not passed in, it should be set to 1, we are saying that if the user click on the [projects] link on the navigation bar it should set it to the first page
+    except PageNotAnInteger:
+        page = 1
+        # ! if a user click on the page or just visting the page for the first time it will display the first page which we have set.
+        projects = paginator.page(page)
+        # ! if the user keep searching the page and there is no more page
+        # ! we are saying that if there is no page, so if the user go out of page, it will give the user the last page
+    except EmptyPage:
+        # ! [  num_pages ] this will tell us how many pages we have
+        page = paginator.num_pages
+        # ! setting projects to the page value, it is going to give us whatever the last page is.
+        projects = paginator.page(page)
+        
     
     context = {'projects': projects, 'search_query' : search_query}
     return render(request, 'basicapp/projects.html', context)
