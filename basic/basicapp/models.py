@@ -38,6 +38,13 @@ class Project(models.Model):
     def __str__(self):
         return self.title
     
+    # ! Order by day OR date, it will display the projects by the datetime or date that are created
+    class Meta:
+        # [-created] descending and ascending [created] order
+        # * Order by data created
+        ordering  = ['-created']
+
+    
     
     
     

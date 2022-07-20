@@ -1,8 +1,9 @@
 from unicodedata import name
+from unittest import result
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-
+from django.core.paginator import Paginator
 from .models import Project, Tag
 from .forms import ProjectForm
 from .utils import searchProjects
@@ -15,7 +16,24 @@ from .utils import searchProjects
 
 def projects(request):
     projects, search_query =  searchProjects(request)
+    # ! Getting the first page
+    page = 1
     
+    # ! Getting the seccond page
+    page = 1
+    
+    
+    # ! Numbers of page to be paginated
+    # ! Give us 3 results per page
+    results = 3
+    # ! it will give us the query_set and give us the [results] here
+    # ! it will give us three results per page.
+    paginator = Paginator(projects, results)
+    
+    # !Resetting the project variable and index it by a specific page and only get 3 results
+    # ! we are going to get 3 projects and we are going to get the first page of those 3 projects
+    # ! [ .page ] means what page do we want to get from the query_set
+    projects = paginator.page(page)
     
     context = {'projects': projects, 'search_query' : search_query}
     return render(request, 'basicapp/projects.html', context)
