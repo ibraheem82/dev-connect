@@ -138,12 +138,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
-MEDIA_URL = 'images/project_images/'
+STATIC_URL = 'static/images/'
+MEDIA_URL = '/images/'
+
+
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
 
 
 STATICFILES_DIRS = [
@@ -152,7 +155,7 @@ STATICFILES_DIRS = [
 
 # ! Telling django where to upload the [images].
 # [MEDIA_ROOT] is telling django where to upload [images] whenever a user upload image
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images/project_images/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images/')
 
 
 
