@@ -72,6 +72,10 @@
         </div>
       </div>
     </section>
+
+
+    <!-- ! this div will display if there is page to paginate -->
+    {% if projects.has_other_pages %}
     <div class="pagination">
       <ul class="container">
 
@@ -105,6 +109,7 @@
         {% endif %}
       </ul>
     </div>
+    {% endif %}
 
   </main>
 
