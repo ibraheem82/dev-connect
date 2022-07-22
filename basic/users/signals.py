@@ -10,12 +10,12 @@ from .models import Profile
 
 
 
-# *********************************************************************************************************************************************#
+#*****************************************************************************************************#
  # ! [sender] is the model that actually send the message.
  # ! [instance] it the instance of the model that actually trigger it.
  # ! [created] will let you know whether it true of false, if a user was added of a model was added to the database or saved again.
  # ! [**kwargs] this is our function.      
-# *********************************************************************************************************************************************#
+# ******************************************************************************************#
 def createProfile(sender, instance, created, **kwargs):
     # ! checking if it is the first instance of the user
     if created:

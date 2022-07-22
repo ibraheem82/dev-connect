@@ -1,12 +1,9 @@
-from unicodedata import name
-from unittest import result
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .models import Project, Tag
 from .forms import ProjectForm
-from .utils import searchProjects
+from .utils import searchProjects, paginateProjects
 
 
 
@@ -16,42 +13,12 @@ from .utils import searchProjects
 
 def projects(request):
     projects, search_query =  searchProjects(request)
-    # ! Getting the first page
-    # page = 1
-    # ! Getting the seccond page
-    # page = 2
-    
-    # todo-> the page must be an integer, it will be pass in to the paginator button so it will display the number of the page on the browser search url and show the page we are on.
-    page = request.GET.get('page')
-    
-    
-    # ! Numbers of page to be paginated
-    # ! Give us 3 results per page
-    results = 3
-    # ! it will give us the query_set and give us the [results] here
-    # ! it will give us three results per page.
-    paginator = Paginator(projects, results)
-    
-    try:
-        # !Resetting the project variable and index it by a specific page and only get 3 results
-        # ! we are going to get 3 projects and we are going to get the first page of those 3 projects
-        # ! [ .page ] means what page do we want to get from the query_set
-        projects = paginator.page(page)
-        # ! [ PageNotAnInteger ] it means that if a page is not passed in, it should be set to 1, we are saying that if the user click on the [projects] link on the navigation bar it should set it to the first page
-    except PageNotAnInteger:
-        page = 1
-        # ! if a user click on the page or just visting the page for the first time it will display the first page which we have set.
-        projects = paginator.page(page)
-        # ! if the user keep searching the page and there is no more page
-        # ! we are saying that if there is no page, so if the user go out of page, it will give the user the last page
-    except EmptyPage:
-        # ! [  num_pages ] this will tell us how many pages we have
-        page = paginator.num_pages
-        # ! setting projects to the page value, it is going to give us whatever the last page is.
-        projects = paginator.page(page)
+    # ! (request, projects, 2) we are going to show 2 results each time,
+    # ! 
+    custom_range, projects = paginateProjects(request, projects, 2)
         
-    
-    context = {'projects': projects, 'search_query' : search_query, 'paginator' : paginator}
+    # ! ['search_query' : search_query] means that we want what we have searched to be in the input form, so what you searched will be in left in the search input when you search a project.
+    context = {'projects': projects, 'search_query' : search_query, 'custom_range' : custom_range}
     return render(request, 'basicapp/projects.html', context)
 
 def project(request, pk):
@@ -59,27 +26,20 @@ def project(request, pk):
     
     # ===> to get a single object from the database
     project = Project.objects.get(id=pk)
-    # for i in projectsList:
-    #      if i['id'] == str(pk):
-    #          projectObj = i
     
     # ===> you can specify the parent name
     # tags = projectObj.tags.all()
+    
+    
+    
+    
+    # =====> related_name = 'reviews' 
+    
     # ===> this is saying give me all the child of review
     # This is a OnetoMany relationship
-    # ===> ( projectObj.review ) accessing the review model Review is cpaital letter
+    # ===> ( projectObj.review ) accessing the review model [Review] is capital letter changed to small letter.
     # ===> ( review_set.all ) go to the project and give me all the reviews in the project
     # getting all the children
-    
-    
-    
-    # =====> related_name = 'reviews'
-    
-    
-    
-    
-    
-    
     
     # reviews = projectObj.review_set.all()
     
@@ -88,9 +48,6 @@ def project(request, pk):
     # using the related name
     # reviews = projectObj.reviews.all()
     # context = {'projectObj' : projectObj, 'tags' : tags, 'reviews' : reviews}
-    
-    
-    # we want to access it in the templates without using the tags and the review in the templates
     
     context = {'project' : project}
     return render(request, 'basicapp/single-projects.html', context)
@@ -112,7 +69,7 @@ def createProject(request):
             # * this is a OnetoMany relationship
             
             
-            # ! we want the project created to be saved to the account or user that create the project
+            # ! we want the project created to be saved to the account of the person that create it or user that create the project.
             # ! project is assigned to the user that create the project.
             project.owner = profile
             project.save()
@@ -138,7 +95,7 @@ def updateProject(request, pk):
     # we need to know the update we are updating
     
     template = 'basicapp/project-form.html'
-    
+
     if request.method == 'POST':
         # if you dont pass in the instance it will create another form but only want to update
         form = ProjectForm(request.POST,  request.FILES, instance = project)
@@ -146,7 +103,6 @@ def updateProject(request, pk):
             form.save()
             return redirect('account')
     context = {'form' : form}
-    
     return render(request, template, context)
 
 

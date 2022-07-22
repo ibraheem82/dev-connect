@@ -71,7 +71,10 @@
       </div>
     </section>
 
-   
+   <!-- ! we want to be able to use pagination anywhere in the template, it is just a key and value pairs, it will paginate all the profiles -->
+    <!-- ! we also need the custom_range in the template -->
+    <!--  -->
+    {% include "pagination.html" with queryset=profiles custom_range=custom_range %}
   </main>
 
 

@@ -24,9 +24,8 @@ class ProjectForm(ModelForm):
          }
          
         # ! Adding classes to the form.
-        
     def __init__(self, *args, **kwargs):
-        # ! telling it the class we are modifying or overriding it.
+        # ! [ProjectForm] means telling it the class we are modifying or overriding it.
         super(ProjectForm, self).__init__(*args, **kwargs)
         
         # ! we are selecting the [names] of each fields and widget with the attributes of ['class':'input']

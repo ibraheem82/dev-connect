@@ -1,6 +1,5 @@
-from multiprocessing import context
-import profile
-from unittest import installHandler
+from distutils.sysconfig import customize_compiler
+from os import curdir
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
@@ -11,7 +10,7 @@ from django.db.models import Q
 from .models import Profile, Skill
 from .forms import CustomUserCreationForm, ProfileForm, SkillForm
 
-from .utils import searchProfiles
+from .utils import searchProfiles, paginateProfiles
 
 # Create your views here.
 
@@ -20,14 +19,11 @@ def loginUser(request):
     
     if request.user.is_authenticated:
         return redirect('profiles')
-    
-    
-    
+
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-
-
+        
         try:
             # ! import the [User] model when using this.
             user = User.objects.get(username = username)
@@ -95,8 +91,12 @@ def profiles(request):
     # ! the [searchProfiles] was decleared in the utils file check it to know more about the function.
     # ! it should return us a queryset
     profiles, search_query = searchProfiles(request)
+    
+      # ! (request, projects, 1) we are going to show 1 results each time, which is the results to be shown.
+    custom_range, profiles = paginateProfiles(request, profiles, 1)
+    
     # ! ['search_query' : search_query] means that we want what we have searched to be in the input form
-    context  = {'profiles' : profiles, 'search_query' : search_query}
+    context  = {'profiles' : profiles, 'search_query' : search_query, 'custom_range' : custom_range}
     return render(request, 'users/profiles.html', context)
 
 
@@ -106,6 +106,9 @@ def profiles(request):
 
 def userProfile(request, pk):
     profile = Profile.objects.get(id=pk)
+    
+    
+  
     
     # ! [topSkills] are skills that have description.
     # ! [description__exact=""] means that if the skills does'nt have a description exclude it.
@@ -142,6 +145,7 @@ def userAccount(request):
     
     skills = profile.skill_set.all()
     
+    # ===> ( project_set.all ) go to the profile and give me all the projects for a particular [user] OR [profile], which means the [projects] related to the [profile] will be shown.
     projects = profile.project_set.all()
 
     context = {'profile' : profile, 'skills' : skills, 'projects' : projects}
@@ -192,8 +196,8 @@ def createSkill(request):
             skill.owner = profile
             skill.save()
             messages.success(request, 'Skill was added successfully')
-            
             return redirect('account')
+        
     context = {'form' : form}
     return render(request, 'users/skill_form.html', context)
 

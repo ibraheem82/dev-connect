@@ -73,45 +73,11 @@
       </div>
     </section>
 
-
-    <!-- ! this div will display if there is page to paginate -->
-    {% if projects.has_other_pages %}
-    <div class="pagination">
-      <ul class="container">
-
-          <!-- ! Outputing the previous btn -->
-          {% if projects.has_previous %}
-          <!-- ! Getting the page number -->
-          <!-- ! it will get us the previous page from the page we are currently on. -->
-          <!-- ! !.e if we are on page 2 previous page will be one and if on page 1 this particular button will not show  -->
-          <li><a href="?page={{projects.previous_page_number}}" class="btn page-link"> &#10094; Prev</a></li>
-          {% endif %}
-
-
-
-        <!-- * [ page_range ] it will give us a range of buttons to altually output  -->
-        {% for page in paginator.page_range %}
-        <!-- ! if the current page we are on matched the project number -->
-        <!-- ! if the current project number or that page index matches the  current page button -->
-          {% if page == projects.number  %}
-          <li><a href="?page={{page}}" class="btn page-link btn--sub">{{page}}</a></li>
-          {% else %}
-          <li><a href="?page={{page}}" class="btn page-link">{{page}}</a></li>
-          {% endif %}
-        {% endfor %}
-
-        <!-- ! Outputing the next btn -->
-        {% if projects.has_next %}
-        <!-- ! Getting the page number -->
-        <!-- ! it will get us the next page from the page we are currently on. -->
-        <!-- ! !.e if we are on page 2 next page will be one and if on page 1 this particular button will not show  -->
-        <li><a href="?page={{projects.next_page_number}}" class="btn page-link">Next &#10095;</a></li>
-        {% endif %}
-      </ul>
-    </div>
-    {% endif %}
+    <!-- ! we want to be able to use pagination anywhere in the template, it is just a key and value pairs -->
+    <!-- ! we also need the custom_range in the template -->
+    {% include "pagination.html" with queryset=projects custom_range=custom_range %}
 
   </main>
 
 
-{% endblock  %}
+{% endblock content %}
