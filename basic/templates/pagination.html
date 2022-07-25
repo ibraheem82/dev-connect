@@ -40,14 +40,13 @@
 
    <script type="text/javascript">
     // -> GET SEARCH FORM AND PAGE LINKS
-    // let searchForm = document.getElementById('searchForm')
-    let form  = document.querySelector('#searchForm')
+    let searchForm = document.getElementById('searchForm')
     //  Grabing all the pagination button and getting them by thier className.
     // It will return a queryset of items
     let pageLinks  = document.getElementsByClassName('page-link')
     // Check if searchForm exist
     // --> ENSURE SEARCH FORM EXIST
-    if (form) {
+    if (searchForm) {
         // Looping through every single items and add an event handler, so all the page links will have an event handler it will allowus  to do something when that page item is clicked on or when the page button is clicked on.
         for(let i = 0; pageLinks.length > i; i++) {
           // Get page link.
