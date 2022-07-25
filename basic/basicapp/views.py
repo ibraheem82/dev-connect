@@ -23,7 +23,7 @@ def projects(request):
 
 def project(request, pk):
 
-    
+
     # ===> to get a single object from the database
     project = Project.objects.get(id=pk)
     
@@ -42,7 +42,6 @@ def project(request, pk):
     # getting all the children
     
     # reviews = projectObj.review_set.all()
-    
     
     
     # using the related name
@@ -86,7 +85,7 @@ def updateProject(request, pk):
     profile = request.user.profile
     # ! we are querying only that users profiles
     # ! only the owner can update the project
-    #  ? [project_set] ? means we are getting all the childrens, so [_set] will give us all the projects  
+    #  ? [project_set] ? means we are getting all the childrens, so [_set] will give us all the projects for a specific profile -> [user].
     project = profile.project_set.get(id = pk)
     # project = Project.objects.get(id = pk)
     

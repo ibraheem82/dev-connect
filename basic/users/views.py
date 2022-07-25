@@ -1,5 +1,3 @@
-from distutils.sysconfig import customize_compiler
-from os import curdir
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
@@ -23,6 +21,7 @@ def loginUser(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
+
         
         try:
             # ! import the [User] model when using this.
@@ -127,17 +126,6 @@ def userProfile(request, pk):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 @login_required(login_url='login')
 def userAccount(request):
     # * will get us the logged in user, if u are not logged in you will not be able to access this page.
@@ -150,11 +138,6 @@ def userAccount(request):
 
     context = {'profile' : profile, 'skills' : skills, 'projects' : projects}
     return render(request, 'users/account.html', context)
-
-
-
-
-
 
 
 

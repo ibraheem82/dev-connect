@@ -1,22 +1,25 @@
-# from xml.parsers.expat import model
-# from email.policy import default
 from django.db import models
 import uuid
 from django.core.validators import FileExtensionValidator
-
 from users.models import Profile
+
+
+
 # Create your models here.
-# Create a user in your database
-# We are using models for our table
+# Create a user in your database.
+# We are using models for our table.
+
 
 # ===> ( null = True) means that the item can be added to the database and it can be empty.
-# ===> ( blank = True) means that you want django know that you can submit a form and and it can be blank
-# ===> ( unique=True ) no other project can have the same id
-# ===> ( primary_key=True ) telling django this is now our primary key of id
+# ===> ( blank = True) means that you want django know that you can submit a form and and it can be blank.
+# ===> ( unique=True ) no other project can have the same id.
+# ===> ( primary_key=True ) telling django this is now our primary key of id.
+
+
 
 class Project(models.Model):
-    # ! we want to connect a [project] to a specific user, that should be a [manytoone] relationship
-    owner               = models.ForeignKey(Profile, null=True, blank=True, on_delete=models.SET_NULL)
+    # ! we want to connect a [project] to a specific user, that should be a [manytoone] relationship.
+    owner               = models.ForeignKey(Profile, null=True,blank=True, on_delete=models.SET_NULL)
     title               = models.CharField(max_length=200)
     description         = models.TextField(null=True, blank=True)
     featured_image      = models.ImageField(validators = [FileExtensionValidator(['png', 'jpg'])], null=True, blank=True, upload_to = 'project_images', default='default.jpg')
@@ -28,9 +31,9 @@ class Project(models.Model):
     tags                = models.ManyToManyField('Tag', blank=True)
     # Timestamp of when the model was instantiated
     created             = models.DateTimeField(auto_now_add=True)
-    # uuid is very secure to use in django, and they are always unique
-    # uuid4 will generate a more unique id because they are all versions, we are using verson 4
-    # Strength of the string is larger than the other one
+    # uuid is very secure to use in django, and they are always unique.
+    # uuid4 will generate a more unique id because they are all versions, we are using verson 4.
+    # Strength of the string is larger than the other one.
     id                  = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
     
     
@@ -40,14 +43,12 @@ class Project(models.Model):
     
     # ! Order by day OR date, it will display the projects by the datetime or date that are created
     class Meta:
-        # [-created] descending and ascending [created] order
-        # * Order by data created
+        # [-created] descending and ascending [created] order.
+        # * Order by data created.
         ordering  = ['-created']
 
-    
-    
-    
-    
+
+ 
     
 class Review(models.Model):
     VOTE_TYPE = (
@@ -55,10 +56,10 @@ class Review(models.Model):
         ('down', 'down'),
     )
     
+    
     # One-to-One
     # owner = 
-    
-    # use the related_name we be use to access it 
+    # use the related_name we be use to access it .
     project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True, blank='True')  # SET_NULL -> will set it to null when u delete the parent model
     
     
@@ -68,7 +69,7 @@ class Review(models.Model):
     
     
     body = models.TextField(null=True, blank=True)
-    # we wantt this to be a dropdown to allow the user select what they want
+    # we want this to be a dropdown to allow the user select what they want.
     # when the user is using this they cant have there own value they can only select
     value = models.CharField(max_length=50, choices=VOTE_TYPE)
     # Anytime you update it
@@ -86,7 +87,8 @@ class Tag(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
     
+    
+
+
     def __str__(self):
         return self.name
-    
-    
