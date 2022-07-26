@@ -4,7 +4,6 @@ from django.core.validators import FileExtensionValidator
 from users.models import Profile
 
 
-
 # Create your models here.
 # Create a user in your database.
 # We are using models for our table.
@@ -58,7 +57,7 @@ class Review(models.Model):
     
     
     # One-to-One
-    # owner = 
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     # use the related_name we be use to access it .
     project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True, blank='True')  # SET_NULL -> will set it to null when u delete the parent model
     
@@ -76,6 +75,10 @@ class Review(models.Model):
     updated = models.DateTimeField(auto_now = True)
     created = models.DateTimeField(auto_now_add=True)
     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+    
+    class Meta:
+        # * A user can only review once on a single project
+        unique_together = [['owner', 'project', ]]
 
     def __str__(self):
         return self.value
