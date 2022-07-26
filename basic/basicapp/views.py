@@ -15,7 +15,7 @@ def projects(request):
     projects, search_query =  searchProjects(request)
     # ! (request, projects, 2) we are going to show 2 results each time,
     # ! 
-    custom_range, projects = paginateProjects(request, projects, 2)
+    custom_range, projects = paginateProjects(request, projects, 6)
         
     # ! ['search_query' : search_query] means that we want what we have searched to be in the input form, so what you searched will be in left in the search input when you search a project.
     context = {'projects': projects, 'search_query' : search_query, 'custom_range' : custom_range}
