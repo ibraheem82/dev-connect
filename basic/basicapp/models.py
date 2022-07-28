@@ -21,7 +21,7 @@ class Project(models.Model):
     owner               = models.ForeignKey(Profile, null=True,blank=True, on_delete=models.SET_NULL)
     title               = models.CharField(max_length=200)
     description         = models.TextField(null=True, blank=True)
-    featured_image      = models.ImageField(validators = [FileExtensionValidator(['png', 'jpg'])], null=True, blank=True, upload_to = 'project_images', default='default.jpg')
+    featured_image      = models.ImageField(validators = [FileExtensionValidator(['png', 'jpg'])], null=True, blank=True, upload_to = 'project_images/', default='images/default.jpg')
     demo_link           = models.CharField(max_length=1000, null=True, blank=True)
     source_link         = models.CharField(max_length=1000, null=True, blank=True)
     vote_total          = models.IntegerField(default=0)
@@ -78,6 +78,8 @@ class Review(models.Model):
     
     class Meta:
         # * A user can only review once on a single project
+        # it is now unique to each other
+        # * [ unique_together ] means only a owner can only review a particular project once.
         unique_together = [['owner', 'project', ]]
 
     def __str__(self):

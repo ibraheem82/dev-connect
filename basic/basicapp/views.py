@@ -25,7 +25,7 @@ def project(request, pk):
 
 
     # ===> to get a single object from the database
-    project = Project.objects.get(id=pk)
+    projectObj = Project.objects.get(id=pk)
     
     # ===> you can specify the parent name
     # tags = projectObj.tags.all()
@@ -48,8 +48,8 @@ def project(request, pk):
     # reviews = projectObj.reviews.all()
     # context = {'projectObj' : projectObj, 'tags' : tags, 'reviews' : reviews}
     
-    context = {'project' : project}
-    return render(request, 'basicapp/single-projects.html', context)
+    # context = {'project' : project}
+    return render(request, 'basicapp/single-projects.html', {'project': projectObj})
 
 
 # ===> views to use the model form
