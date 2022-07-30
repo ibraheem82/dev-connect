@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import Project, Tag
-from .forms import ProjectForm
+from .forms import ProjectForm, ReviewForm
 from .utils import searchProjects, paginateProjects
 
 
@@ -22,16 +22,20 @@ def projects(request):
     return render(request, 'basicapp/projects.html', context)
 
 def project(request, pk):
-
-
-    # ===> to get a single object from the database
     projectObj = Project.objects.get(id=pk)
     
-    # ===> you can specify the parent name
-    # tags = projectObj.tags.all()
+    # * ReviewForm 
+    form = ReviewForm()
     
-    
-    
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        review  = form.save(commit = False)
+        review.project = projectObj
+        # * it will give us the owner
+        review.owner = request.user.profile
+        review.save()
+        
+        # ! Update project vote count
     
     # =====> related_name = 'reviews' 
     
@@ -49,7 +53,7 @@ def project(request, pk):
     # context = {'projectObj' : projectObj, 'tags' : tags, 'reviews' : reviews}
     
     # context = {'project' : project}
-    return render(request, 'basicapp/single-projects.html', {'project': projectObj})
+    return render(request, 'basicapp/single-projects.html', {'project': projectObj, 'form': form})
 
 
 # ===> views to use the model form
