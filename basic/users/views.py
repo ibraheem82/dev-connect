@@ -19,7 +19,7 @@ def loginUser(request):
         return redirect('profiles')
 
     if request.method == 'POST':
-        username = request.POST['username']
+        username = request.POST['username'].lower()
         password = request.POST['password']
 
         
@@ -36,7 +36,9 @@ def loginUser(request):
         if user is not None:
             # ! [ login() ] is going to create a [sessions] for the user, in the database inside the [sessions] table, then it is going to get that [sessions] and add it to our browsers [cookies]
             login(request, user)
-            return redirect('profiles')
+            # will send the user to the next route.
+            # * the next route will be what we have passed in the url.
+            return redirect(request.GET['next'] if 'next' in request.GET else 'account')
         else:
             messages.error(request, 'Username OR Password is incorrect')
     return render(request, 'users/login_register.html')
