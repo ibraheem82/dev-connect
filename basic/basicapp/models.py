@@ -45,13 +45,15 @@ class Project(models.Model):
         # [-created] descending and ascending [created] order.
         # * Order by data created.
         ordering  = ['-vote_ratio', '-vote_ratio', 'title']
+        
+        #will be use on the templates
     @property 
     def reviewers(self):
         # getting a single attributes of the reviews 
         # ** [flat()] will convert it into a full list
         # wiil give us the entire ids of people that have reviwed
         
-        queryset = self.review_set.all().values_list('owner__id')
+        queryset = self.review_set.all().values_list('owner__id', flat = True)
         return queryset
         
         
