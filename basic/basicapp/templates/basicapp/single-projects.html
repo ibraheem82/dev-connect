@@ -51,22 +51,21 @@
             <form class="form" action="{% url 'project' project.id %}" method="POST">
               {% for field in form %}
               <div class="form__field">
-                <label for="formInput#textarea">{{field.label}}: </label>
-                {{field}}
+                <label for="formInput#textarea">{{field.labels}}</label>
               </div>
             {% endfor %}
               <input class="btn btn--sub btn--lg" type="submit" value="Comments" />
             </form>
 
             <div class="commentList">      
-            {% for review in project.review_set.all %}
-
+              {% for review in project.review_set.all %}
             <!-- * Only the review that have a comment should be shown. -->
               {% if review.body %}
               <div class="comment">
                 <a href="{% url 'user-profile' review.owner.id %}">
                   <img class="avatar avatar--md" src="{{review.owner.profile_image.url}}" alt="user" />
                 </a>
+
                 <div class="comment__details">
                   <!-- * the link will navigate to the person that review profile -->
                   <a href="{% url 'user-profile' review.owner.id %}" class="comment__author">{{review.owner.name}}</a>
@@ -76,8 +75,10 @@
                   </p>
                 </div>
               </div>
-            {% endif %}
+              {% endif %}
             {% endfor %}
+
+          
             </div>
           </div>
         </div>
