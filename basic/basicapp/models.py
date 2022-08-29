@@ -51,11 +51,11 @@ class Project(models.Model):
     def getVoteCount(self):
     # getting all the reviews
         reviews = self.review_set.all()
-        upVotes = reviews.filter(value = 'up')
+        upVotes = reviews.filter(value = 'up').count()
         totalVotes = reviews.count()
         ratio  = (upVotes / totalVotes) * 100
         self.vote_total = totalVotes
-        self.vote_ratio = vote_ratio
+        self.vote_ratio = ratio
         self.save()
 
  
