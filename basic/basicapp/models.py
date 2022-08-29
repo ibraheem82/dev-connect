@@ -44,7 +44,17 @@ class Project(models.Model):
     class Meta:
         # [-created] descending and ascending [created] order.
         # * Order by data created.
-        ordering  = ['-created']
+        ordering  = ['-vote_ratio', '-vote_ratio', 'title']
+    @property 
+    def reviewers(self):
+        # getting a single attributes of the reviews 
+        # ** [flat()] will convert it into a full list
+        # wiil give us the entire ids of people that have reviwed
+        
+        queryset = self.review_set.all().values_list('owner__id')
+        return queryset
+        
+        
         
         # * Calculate the amount of vote
     @property
