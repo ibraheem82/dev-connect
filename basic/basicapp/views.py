@@ -35,6 +35,9 @@ def project(request, pk):
         # * it will give us the owner
         review.owner = request.user.profile
         review.save()
+        # that is the usefullness of the (@property) decorator
+        projectObj.getVoteCount
+        
         messages.success(request, 'Your review was submitted successfully!')
         # To clear the form after submitting the form.
         return redirect('project', pk=projectObj.id)
