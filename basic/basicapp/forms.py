@@ -49,6 +49,7 @@ class ReviewForm(ModelForm):
         labels = {
             'value': 'Place your vote',
             'body': 'Add a comment with your vote'
+            
             }    
         # ! Adding classes to the form.
     def __init__(self, *args, **kwargs):
@@ -57,4 +58,4 @@ class ReviewForm(ModelForm):
         
         # ! we are selecting the [names] of each fields and widget with the attributes of ['class':'input']
         for name, field in self.fields.items():
-            field.widget.attrs.update({'class': 'input'})
+            field.widget.attrs.update({'class':'input'})
