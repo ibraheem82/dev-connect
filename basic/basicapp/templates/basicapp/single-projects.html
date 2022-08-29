@@ -47,14 +47,16 @@
             <h5 class="project--rating">
               {{project.vote_ratio}}% Postitive Feedback ({{project.vote_total}} Vote{{project.vote_total|pluralize:"s"}})
             </h5>
-                                <!-- *  means send the user back to the project page and the project page should take care of the form -->
+              <!-- *  means send the user back to the project page and the project page should take care of the form -->
             <form class="form" action="{% url 'project' project.id %}" method="POST">
-              {% for field in form %}
+              {% csrf_token %}
+              {% for fields in form %}
               <div class="form__field">
-                <label for="formInput#textarea">{{field.labels}}</label>
+                <label for="formInput#textarea">{{fields.labels}}</label>
+                {{fields}}
               </div>
             {% endfor %}
-              <input class="btn btn--sub btn--lg" type="submit" value="Comments" />
+              <input class="btn btn--sub btn--lg" type="submit" value="Add Review" />
             </form>
 
             <div class="commentList">      
