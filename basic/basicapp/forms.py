@@ -1,6 +1,6 @@
 # All the model form will be stored in this section
 # from dataclasses import field
-from dataclasses import field
+# from dataclasses import field
 from django.forms import ModelForm
 
 # ! the [form] imported will allow us add widget and style our [modelForm] in a customizable way.
@@ -31,9 +31,7 @@ class ProjectForm(ModelForm):
         
         # ! we are selecting the [names] of each fields and widget with the attributes of ['class':'input']
         for name, field in self.fields.items():
-            field.widget.attrs.update(
-            {'class':'input'}
-            )
+            field.widget.attrs.update({'class':'input'})
         
             
         # ! Selecting the actual field that we want to modify
@@ -49,10 +47,9 @@ class ReviewForm(ModelForm):
         fields = ['value', 'body']
 
         labels = {
-            'value' : 'Place your vote',
-            'body' : 'Add a comment with your vote'
-        }
-
+            'value': 'Place your vote',
+            'body': 'Add a comment with your vote'
+            }    
         # ! Adding classes to the form.
     def __init__(self, *args, **kwargs):
         # ! [ReviewForm] means telling it the class we are modifying or overriding it.
@@ -60,7 +57,4 @@ class ReviewForm(ModelForm):
         
         # ! we are selecting the [names] of each fields and widget with the attributes of ['class':'input']
         for name, field in self.fields.items():
-            field.widget.attrs.update(
-            {'class':'input'}
-            )
-                 
+            field.widget.attrs.update({'class': 'input'})
