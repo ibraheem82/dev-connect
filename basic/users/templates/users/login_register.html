@@ -9,7 +9,7 @@
 
 <div class="auth">
   <div class="card">
-    <div class="auth__header text-center">
+    <div class="auth__header text-center"> 
       <a href="/">
         <img src=" {% static 'images/icon.svg' %} " alt="icon" />
       </a>
@@ -60,7 +60,7 @@
       <p>Hello Developer, Welcome Back!</p>
     </div>
 
-    <form method="POST" action="{% url 'login' %}" class="form auth__form">
+    <form method="POST" action="" class="form auth__form">
       {% csrf_token %}
 
       <!-- Input:Username -->
