@@ -21,7 +21,7 @@ class Project(models.Model):
     owner               = models.ForeignKey(Profile, null=True,blank=True, on_delete=models.SET_NULL)
     title               = models.CharField(max_length=200)
     description         = models.TextField(null=True, blank=True)
-    featured_image      = models.ImageField(validators = [FileExtensionValidator(['png', 'jpg'])], null=True, blank=True, upload_to = 'project_images/', default='images/default.jpg')
+    featured_image      = models.ImageField(validators = [FileExtensionValidator(['png', 'jpg'])], null=True, blank=True, default='default.jpg')
     demo_link           = models.CharField(max_length=1000, null=True, blank=True)
     source_link         = models.CharField(max_length=1000, null=True, blank=True)
     vote_total          = models.IntegerField(default=0)
@@ -45,7 +45,18 @@ class Project(models.Model):
         # [-created] descending and ascending [created] order.
         # * Order by data created.
         ordering  = ['-created']
-
+        
+        # * Calculate the amount of vote
+    @property
+    def getVoteCount(self):
+    # getting all the reviews
+        reviews = self.review_set.all()
+        upVotes = reviews.filter(value = 'up')
+        totalVotes = reviews.count()
+        ratio  = (upVotes / totalVotes) * 100
+        self.vote_total = totalVotes
+        self.vote_ratio = vote_ratio
+        self.save()
 
  
     
@@ -57,30 +68,28 @@ class Review(models.Model):
     
     
     # One-to-One
-    owner = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
+    owner           = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     # use the related_name we be use to access it .
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True, blank='True')  # SET_NULL -> will set it to null when u delete the parent model
-    
-    
+    project         = models.ForeignKey(Project, on_delete=models.CASCADE, null=True, blank='True')  # SET_NULL -> will set it to null when u delete the parent model
     
     # project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True, blank=True, related_name='reviews')  # SET_NULL -> will set it to null when u delete the parent model
     
     
     
-    body = models.TextField(null=True, blank=True)
+    body             = models.TextField(null=True, blank=True)
     # we want this to be a dropdown to allow the user select what they want.
     # when the user is using this they cant have there own value they can only select
-    value = models.CharField(max_length=50, choices=VOTE_TYPE)
+    value            = models.CharField(max_length=50, choices=VOTE_TYPE)
     # Anytime you update it
-    updated = models.DateTimeField(auto_now = True)
-    created = models.DateTimeField(auto_now_add=True)
-    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+    updated          = models.DateTimeField(auto_now = True)
+    created          = models.DateTimeField(auto_now_add=True)
+    id               = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
     
     class Meta:
         # * A user can only review once on a single project
         # it is now unique to each other
         # * [ unique_together ] means only a owner can only review a particular project once.
-        unique_together = [['owner', 'project', ]]
+        unique_together     = [['owner', 'project']]
 
     def __str__(self):
         return self.value
@@ -88,9 +97,9 @@ class Review(models.Model):
     
 class Tag(models.Model):
     # we dont want it to be blank
-    name = models.CharField(max_length=200)
-    created = models.DateTimeField(auto_now_add=True)
-    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+    name        = models.CharField(max_length=200)
+    created     = models.DateTimeField(auto_now_add=True)
+    id          = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
     
     
 
