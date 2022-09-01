@@ -5,7 +5,7 @@ from django.contrib import messages
 # from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.db.models import Q
-from .models import Profile, Skill
+from .models import Profile, Skill, Message
 from .forms import CustomUserCreationForm, ProfileForm, SkillForm
 
 from .utils import searchProfiles, paginateProfiles
@@ -94,7 +94,7 @@ def profiles(request):
     profiles, search_query = searchProfiles(request)
     
       # ! (request, projects, 1) we are going to show 1 results each time, which is the results to be shown.
-    custom_range, profiles = paginateProfiles(request, profiles, 1)
+    custom_range, profiles = paginateProfiles(request, profiles, 3)
     
     # ! ['search_query' : search_query] means that we want what we have searched to be in the input form
     context  = {'profiles' : profiles, 'search_query' : search_query, 'custom_range' : custom_range}
@@ -210,7 +210,7 @@ def updateSkill(request, pk):
 
 
 
-
+@login_required(login_url = 'login')
 def deleteSkill(request, pk):
     profile = request.user.profile
     # ! we are getting the skill from the profile, we are querying it by the [pk]
@@ -222,3 +222,30 @@ def deleteSkill(request, pk):
         return redirect('account')
     context = {'object': skill}
     return render(request, 'delete.html', context)
+
+
+@login_required(login_url = 'login')
+def inbox(request):
+    profile = request.user.profile
+    # * Getting the recipient messages.
+    messageRequests  = profile.messages.all()
+    # * Counting the unread message only.
+    unreadCount = messageRequests.filter(is_read=False).count()
+    context = {'messageRequests': messageRequests, 'unreadCount':unreadCount}
+    return render(request, 'users/inbox.html', context)
+
+@login_required(login_url = 'login')
+def viewMessage(request, pk):
+    # * Only the authenticated user can access their message, which means when you are logged in only can access your messages.
+    profile  = request.user.profile
+    # * getting the messages based on the url.
+    # passing the [id] as the primary key.
+    message  = profile.messages.get(id=pk)
+    if message.is_read == False:
+        # when the ser opens the message is been read
+        message.is_read = True
+        # * anytime the user opens the message it is automatically saved.
+        message.save()
+    context = {'message' : message}
+    return render(request, 'users/message.html', context)
+    
