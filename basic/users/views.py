@@ -77,7 +77,7 @@ def registerUser(request):
             # return redirect('profiles')
 
             # * When the user create thier account they should be redirected to the edit page.
-            return redirect('profiles')
+            return redirect('edit-account')
 
 
         else:
