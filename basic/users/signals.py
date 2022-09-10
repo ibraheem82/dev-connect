@@ -5,6 +5,11 @@ from django.dispatch import receiver
 from django.contrib.auth.models import User
 from .models import Profile
 
+from django.core.mail import send_mail
+# * want the email to be dynamic, anyone can send the email.
+from django.conf import settings
+
+
 
 # * Don't forget to let django know that you are using the signals.py, so you should set it in the [apps.py]
 
@@ -27,6 +32,18 @@ def createProfile(sender, instance, created, **kwargs):
             username = user.username,
             email = user.email,
             name = user.first_name
+        )
+        subject = 'Welcome to DeVConnect'
+        message = 'Very glad you are here'
+        send_mail(
+            subject,
+            message,
+            # the person that is send the email
+            # the message wll be sent from the company that owns the website.
+            settings.EMAIL_HOST_USER,
+            # the recipient or the reciver of the email, get the from the person profile which means the the perosn creating the account.
+            [profile.email],
+            fail_silently = False,
         )
 
 def updateUser(sender, instance, created, **kwargs):
