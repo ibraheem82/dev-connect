@@ -44,7 +44,7 @@ def paginateProjects(request, projects, results):
     # ! if the left index is less 1, so if we are on page 3 and we do (3 - 4) it will gives us a negative value
     
     # TODO : condition to follow
-    # ! even thoug we have 5 pages we should only see 3 at a time.
+    # ! even though we have 5 pages we should only see 3 at a time.
     # ! if we have a thousands pages, we will never see a thousand pages output like that
     
     if leftIndex < 1:
