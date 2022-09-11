@@ -51,6 +51,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('basicapp/', include('basicapp.urls')),
     path('', include('users.urls')),
+    # ! <api->[urls]> urls for our apis
+    path('api/', include('api.urls')),
     
     
     
