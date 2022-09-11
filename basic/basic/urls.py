@@ -63,7 +63,7 @@ urlpatterns = [
 
 
     # * [<uidb64>] : will encode the user id in the base<64> encryption
-    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name = 'password_reset_confirm'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name = "reset.html"), name = 'password_reset_confirm'),
 
 
     path('reset_password_complete', auth_views.PasswordResetCompleteView.as_view(), name = 'password_reset_complete'),
