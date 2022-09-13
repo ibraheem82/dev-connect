@@ -53,7 +53,7 @@ def getProjects(request):
 @api_view(['GET'])
 def getProject(request, pk):
     # getting all the objects.
-    project = Project.objects.all(id  = pk)
+    project = Project.objects.get(id  = pk)
     # @ We need to pass in serialized data, we need to pass in json data.
     # ! this [ProjectSerializer] is taken the (projects) and turning it into a json data.
     serializer = ProjectSerializer(project, many = False)
