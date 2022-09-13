@@ -2,6 +2,8 @@
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from .serializers import ProjectSerializer
+from basicapp.models import Project
 
 # * by default the jsonResponse can only return a dictionary.
 
@@ -30,3 +32,17 @@ def getRoutes(request):
     # [safe = ] tells us that we can return something that is more than a python dictionary
     # return JsonResponse(routes, safe=False)
     return Response(routes)
+
+
+
+
+# **This route will query the database and get our routes for us.
+@api_view(['GET'])
+def getProjects(request):
+    # getting all the objects.
+    projects = Project.objects.all()
+    # @ We need to pass in serialized data, we need to pass in json data.
+    # ! this [ProjectSerializer] is taken the (projects) and turning it into a json data.
+    serializer = ProjectSerializer(projects, many = True)
+    # will give us the actual serialized project
+    return Response(serializer.data)
