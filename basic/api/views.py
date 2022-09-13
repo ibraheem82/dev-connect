@@ -1,7 +1,11 @@
 # * Wiil turn all our pytho data to [json].
 from django.http import JsonResponse
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 # * by default the jsonResponse can only return a dictionary.
+
+@api_view(['GET'])
 def getRoutes(request):
     routes = [
         # * will return back a list of project objects
@@ -24,4 +28,5 @@ def getRoutes(request):
         {'POST': '/api/projects/id/vote'},
     ]
     # [safe = ] tells us that we can return something that is more than a python dictionary
-    return JsonResponse(routes, safe=False)
+    # return JsonResponse(routes, safe=False)
+    return Response(routes)
