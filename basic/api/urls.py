@@ -14,8 +14,9 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     
     # Will generate token for the authenticated user.
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('users/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    # * Anytime the token expires a new to will be sent to the new user
+    path('users/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     
     
     
