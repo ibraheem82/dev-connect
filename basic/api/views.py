@@ -1,6 +1,9 @@
 # * Wiil turn all our pytho data to [json].
 from django.http import JsonResponse
-from rest_framework.decorators import api_view
+# [permission_classes] for api authentication
+from rest_framework.decorators import api_view, permission_classes
+# * Using class based view for the api authentication [permission_classes] class.
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .serializers import ProjectSerializer
 from basicapp.models import Project
@@ -36,8 +39,19 @@ def getRoutes(request):
 
 
 
+
+
+
+
+
+
+
+
 # **This route will query the database and get our routes for us.
 @api_view(['GET'])
+# ! Only authenticated user can view this route.
+# ! this route will be restricted to the unauthenticated user.
+@permission_classes([IsAuthenticated])
 def getProjects(request):
     # getting all the objects.
     projects = Project.objects.all()
