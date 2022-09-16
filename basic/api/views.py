@@ -51,8 +51,9 @@ def getRoutes(request):
 @api_view(['GET'])
 # ! Only authenticated user can view this route.
 # ! this route will be restricted to the unauthenticated user.
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def getProjects(request):
+    # print('USER👤', request.user)
     # getting all the objects.
     projects = Project.objects.all()
     # @ We need to pass in serialized data, we need to pass in json data.
