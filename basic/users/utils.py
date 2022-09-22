@@ -10,7 +10,7 @@ def paginateProfiles(request, profiles, results):
     # ! Getting the seccond page
     # page = 2
     
-    # todo-> the page must be an integer, it will be pass in to the paginator button so it will display the number of the page on the browser search url and show the page we are on.
+    # todo-> the page must be an integer, it will be pass in to the paginator button so it will display the number of the page on the browser search url and show the page we are currently on.
     page = request.GET.get('page')
     
 
