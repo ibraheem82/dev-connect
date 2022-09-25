@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .serializers import ProjectSerializer
-from basicapp.models import Project
+from basicapp.models import Project, Review
 
 # * by default the jsonResponse can only return a dictionary.
 
@@ -73,4 +73,37 @@ def getProject(request, pk):
     # ! this [ProjectSerializer] is taken the (projects) and turning it into a json data.
     serializer = ProjectSerializer(project, many = False)
     # will give us the actual serialized project
+    return Response(serializer.data)
+
+
+
+
+@api_view(['POST'])
+# * The user must be logged in
+@permission_classes([IsAuthenticated])
+def projectVote(request, pk):
+    project  = Project.objects.get(id = pk)
+    # * The user is comming from the token.
+    user = request.user.profile
+    data = request.data
+    # print(data)
+    # print(f'DATA {data}')
+    
+    
+    # when you just created a user, a user with the attribute below will be created
+    # * [get_or_create()] will check if the objects below exist in the database. for example "if the user already left a review on the particular project we are getting then it is going to get that user it is not not going to create a new one it is just going to get the user and return back an object, if that user does not exist it is going to create the user which is the Review for us."
+    # review there will be true or false.
+    review, created = Review.objects.get_or_create(
+        owner = user,
+        project = project,
+    )
+    # getting the object from the value and setting it.
+    review.value = data['value']
+    review.save()
+    project.getVoteCount
+    
+    serializer = ProjectSerializer(project, many = False)
+
+
+    
     return Response(serializer.data)
