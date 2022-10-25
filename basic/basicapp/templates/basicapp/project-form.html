@@ -22,9 +22,15 @@
                     <div class="form__field">
                         <label for="formInput#text">{{field.label}}</label>
                         {{field}}
-                       
                     </div>
                     {% endfor %}
+
+                    <div class="form__field">
+                      <label for="formInput#text">Tags</label>
+                      <textarea class="input" name="newtags" placeholder="Add tags here..."></textarea>
+                        {{field}}
+                    </div>
+
 
 
                     <input class="btn btn--sub btn--lg  my-md" type="submit" value="Submit" />
