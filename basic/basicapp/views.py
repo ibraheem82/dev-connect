@@ -106,6 +106,11 @@ def updateProject(request, pk):
     template = 'basicapp/project-form.html'
 
     if request.method == 'POST':
+        
+        # ! Getting the tags that will be updated.
+        newtags = request.POST.get('newtags').split()
+        print("DATA:", request.POST)
+        
         # if you dont pass in the instance it will create another form but only want to update
         form = ProjectForm(request.POST,  request.FILES, instance = project)
         if form.is_valid():
