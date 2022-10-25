@@ -1,0 +1,14 @@
+/basic/users/migrations
+/basic/pycache
+/basic/basicapp/migrations
+/basic/basicapp/__pycache__
+/basic/basicapp/migrations
+/basic/users/migrations
+/basic/api/__pycache__
+/users/migrations
+/users/pycache
+/sent_emails
+/static
+/static/images
+db.sqlite3
+manage.py

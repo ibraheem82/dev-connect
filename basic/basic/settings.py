@@ -56,6 +56,8 @@ INSTALLED_APPS = [
     
     
     'rest_framework',
+    # ! Cors configurations
+    'corsheaders',
 ]
 
 
@@ -109,6 +111,9 @@ SIMPLE_JWT = {
 
 
 MIDDLEWARE = [
+    # ! Cors configurations
+    
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -187,6 +192,11 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+    # ! Cors configurations
+    # * it will also all domains
+CORS_ALLOW_ALL_ORIGINS = True
+
 
 # ***** Configuration for email *****#
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
