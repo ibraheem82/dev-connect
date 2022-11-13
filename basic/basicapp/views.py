@@ -70,6 +70,8 @@ def createProject(request):
     form = ProjectForm()
     
     if request.method == 'POST':
+        newtags = request.POST.get('newtags').replace(',', " ").split()
+        
         # print('FORM DATA', request.POST)
         # pass in the post data
         form = ProjectForm(request.POST, request.FILES)
@@ -83,6 +85,15 @@ def createProject(request):
             # ! project is assigned to the user that create the project.
             project.owner = profile
             project.save()
+            
+            for tag in newtags:
+                # * create a new tag or get that particular that was already existing in the database.
+                tag, created = Tag.objects.get_or_create(name=tag)
+                # manytomany relationship -> adding to the tag either created or get.
+                # adding the tag that was created back to the database.
+                # added to the project.
+                project.tags.add(tag)
+                messages.info(request, tag, 'was added')
             return redirect('account')
         
     
