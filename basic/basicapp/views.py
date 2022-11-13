@@ -1,3 +1,4 @@
+from venv import create
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -108,13 +109,21 @@ def updateProject(request, pk):
     if request.method == 'POST':
         
         # ! Getting the tags that will be updated.
-        newtags = request.POST.get('newtags').split()
-        print("DATA:", request.POST)
+        newtags = request.POST.get('newtags').replace(',', " ").split()
+        # print("DATA:", request.POST)
+        # print("DATA:", newtags)
         
         # if you dont pass in the instance it will create another form but only want to update
         form = ProjectForm(request.POST,  request.FILES, instance = project)
-        if form.is_valid():
+        if form.is_valid(): 
             form.save()
+            for tag in newtags:
+                # * create a new tag or get that particular that was already existing in the database.
+                tag, created = Tag.objects.get_or_create(name=tag)
+                # manytomany relationship -> adding to the tag either created or get.
+                # adding the tag that was created back to the database.
+                # added to the project.
+                project.tags.add(tag)
             return redirect('account')
     context = {'form' : form}
     return render(request, template, context)
