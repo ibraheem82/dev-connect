@@ -59,8 +59,11 @@ def updateUser(sender, instance, created, **kwargs):
     
 # ! Anytime we delete a profile we also wants to delete a user.
 def deleteUser(sender, instance, **kwargs):
-    user  = instance.user
-    user.delete()
+    try:
+        user  = instance.user
+        user.delete()
+    except:
+        pass
     
 
 # ! Anytime a user [model] get created, a profile will get created
