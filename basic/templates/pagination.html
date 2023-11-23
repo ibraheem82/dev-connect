@@ -1,0 +1,39 @@
+   <!-- ! this div will display if there is page to paginate -->
+   {% if queryset.has_other_pages %}
+   <div class="pagination">
+     <ul class="container">
+
+         <!-- ! Outputing the previous btn -->
+         {% if queryset.has_previous %}
+         <!-- ! Getting the page number -->
+         <!-- ! it will get us the previous page from the page we are currently on. -->
+         <!-- ! !.e if we are on page 2 previous page will be one and if on page 1 this particular button will not show  -->
+         <li><a href="?page={{queryset.previous_page_number}}" class="btn page-link" data-page="{{queryset.previous_page_number}}"> &#10094; Prev</a></li>
+         {% endif %}
+
+
+       {% for page in custom_range %}
+
+       <!-- * [ page_range ] it will give us a range of buttons to altually output -->
+      
+       <!-- ! if the current page we are on matched the project number -->
+       <!-- ! if the current project number or that page index matches the  current page button -->
+     
+         {% if page == queryset.number  %}
+         <li><a href="?page={{page}}" class="btn page-link btn--sub" data-page="{{page}}">{{page}}</a></li>
+         {% else %}
+         <li><a href="?page={{page}}" class="btn page-link" data-page="{{page}}">{{page}}</a></li>
+         {% endif %}
+       {% endfor %}
+
+       <!-- ! Outputing the next btn -->
+       {% if queryset.has_next %}
+       <!-- ! Getting the page number -->
+       <!-- ! it will get us the next page from the page we are currently on. -->
+       <!-- ! !.e if we are on page 2 next page will be one and if on page 1 this particular button will not show  -->
+       <li><a href="?page={{queryset.next_page_number}}" class="btn page-link" data-page="{{queryset.next_page_number}}">Next &#10095;</a></li>
+       {% endif %}
+     </ul>
+   </div>
+   {% endif %}
+
